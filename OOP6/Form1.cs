@@ -31,7 +31,7 @@ namespace OOP6
             bitmap = new Bitmap(sheet.Width, sheet.Height);
             G = Graphics.FromImage(bitmap);
             sheet.Image = bitmap;
-            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 26, sheet.Width - 2, sheet.Height - 2);
+            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 30, sheet.Width - 2, sheet.Height - 2);
         }
 
         private void unselectedAll()
@@ -183,10 +183,10 @@ namespace OOP6
                 switch (e.KeyCode)
                 {
                     case Keys.Q:
-                        dx = -1;
+                        dx = -3;
                         break;
                     case Keys.E:
-                        dx = 1;
+                        dx = 3;
                         break;
                 }
                 for (int i = 0; i < S.getsize(); i++)
@@ -255,7 +255,7 @@ namespace OOP6
         {
             bitmap = new Bitmap(sheet.Width, sheet.Height);
             G = Graphics.FromImage(bitmap);
-            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 26, sheet.Width - 2, sheet.Height - 2);
+            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 30, sheet.Width - 2, sheet.Height - 2);
             for(int i= 0; i< S.getsize(); i++)
             {
                 if (S.obj[i] != null)

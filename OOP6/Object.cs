@@ -23,7 +23,6 @@ namespace OOP6
         Color color;
         Pen redpen = new Pen(Color.Red);
         public bool popal = false;
-        
        
         public void DrawShape(Graphics G)
         {
@@ -39,37 +38,55 @@ namespace OOP6
 
         public void ObjSize(int dx)
         {
-            this.OValue = this.OValue + dx;
+            OValue = OValue + dx;
             createShape();
-            outOfBounds(this.x, this.y);
+            outOfBounds(); 
         }
 
         public void Move(int dx, int dy)
         {
-            this.x = this.x + dx;
-            this.y = this.y + dy;
+            x = x + dx;
+            y = y + dy;
             createShape();
-            outOfBounds(this.x, this.y);
-            
+            outOfBounds();
         }
 
         public abstract void createShape();
 
-        public void outOfBounds(int x, int y)
+        public void outOfBounds()
         {
-                if (x - OValue/2 < circuit.Left)
-                    Move(1, 0);       
-                if (x + OValue/2 > circuit.Right - circuit.X)
-                    Move(-1, 0);      
-                if (y - OValue/2 < circuit.Top)
-                    Move(0, 1);      
-                if (y + OValue/2 > circuit.Bottom - circuit.Y)
-                    Move(0, -1);   
+            //if (x - OValue / 2 < circuit.Left)
+            //    Move(1, 0);
+            //if (y - OValue / 2 < circuit.Top)
+            //    Move(0, 1);
+            //if (x + OValue / 2 > circuit.Right)
+            //    Move(-1, 0);
+            //if (y + OValue / 2 > circuit.Bottom)
+            //    Move(0, -1);
+            
+            
+            while (!circuit.Contains(myPath.GetBounds()))
+            {
+                RectangleF ShapeCircuit = myPath.GetBounds();
+                PointF LeftTop = ShapeCircuit.Location;
+                PointF RightTop = new PointF(ShapeCircuit.Right, ShapeCircuit.Top);
+                PointF LeftBottom = new PointF(ShapeCircuit.Left, ShapeCircuit.Bottom);
+                PointF RightBottom = new PointF(ShapeCircuit.Right, ShapeCircuit.Bottom);
+                if (!circuit.Contains(LeftTop) && !circuit.Contains(LeftBottom))
+                    ++x;
+                if (!circuit.Contains(LeftTop) && !circuit.Contains(RightTop))
+                    ++y;
+                if (!circuit.Contains(RightTop) && !circuit.Contains(RightBottom))
+                    --x;
+                if (!circuit.Contains(LeftBottom) && !circuit.Contains(RightBottom))
+                    --y;
+                createShape();
+            }
         }
 
         public void getRectangleF(RectangleF r)
         {
-            this.circuit = r;
+            circuit = r;
         }
         
         public void ChangeColor(Color color)

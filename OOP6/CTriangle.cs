@@ -19,6 +19,7 @@ namespace OOP6
             this.y = y;
             this.circuit = circuit;
             createShape();
+            outOfBounds();
         }
 
         public override void createShape()
@@ -29,7 +30,6 @@ namespace OOP6
                 new Point(x, y - OValue/2),
                 new Point(x-OValue/2, y + OValue/2),
                 new Point(x + OValue/2, y + OValue/2)
-
             };
             myPath.AddPolygon(point);
         }

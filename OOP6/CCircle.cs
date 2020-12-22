@@ -18,12 +18,14 @@ namespace OOP6
             this.y = y;
             this.circuit = circuit;
             createShape();
+            outOfBounds();
+            
         }
 
         public override void createShape()
         {
             myPath.Reset();
-            Rectangle PathRec = new Rectangle(x - OValue/2, y- OValue/2, OValue, OValue);
+            Rectangle PathRec = new Rectangle(x - OValue/2, y - OValue/2, OValue, OValue);
             myPath.AddEllipse(PathRec);
         }
     }

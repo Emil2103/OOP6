@@ -20,16 +20,16 @@ namespace OOP6
         protected int OValue = 50;
         protected RectangleF circuit;
         protected GraphicsPath myPath = new GraphicsPath();
-        Pen blackpen = new Pen(Color.Black);
+        Color color;
         Pen redpen = new Pen(Color.Red);
         public bool popal = false;
         
        
         public void DrawShape(Graphics G)
         {
-            blackpen.Width = 2;
+            Pen pen = new Pen(color, 2);
             redpen.Width = 2;
-            G.DrawPath(popal ? redpen : blackpen, myPath);
+            G.DrawPath(popal ? redpen : pen, myPath);
         }
 
         public bool Popal(int x, int y)
@@ -55,28 +55,26 @@ namespace OOP6
 
         public abstract void createShape();
 
-
         public void outOfBounds(int x, int y)
         {
-   
-                if (x < circuit.Left)
+                if (x - OValue/2 < circuit.Left)
                     Move(1, 0);       
-                if (x > circuit.Right - circuit.X)
+                if (x + OValue/2 > circuit.Right - circuit.X)
                     Move(-1, 0);      
-                if (y < circuit.Top)
+                if (y - OValue/2 < circuit.Top)
                     Move(0, 1);      
-                if (y > circuit.Bottom - circuit.Y)
+                if (y + OValue/2 > circuit.Bottom - circuit.Y)
                     Move(0, -1);   
-
         }
 
         public void getRectangleF(RectangleF r)
         {
             this.circuit = r;
         }
-
         
-
-        
+        public void ChangeColor(Color color)
+        {
+            this.color = color;
+        }
     }
 }

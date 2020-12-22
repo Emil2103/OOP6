@@ -16,8 +16,11 @@ namespace OOP6
         Graphics G;
         Storage S;
         Bitmap bitmap;
+        Color color;
         bool ctrlPress = false;
-        public int t;
+        bool Cpress = false;
+        public int t; //выбор фигуры
+        public int c; //выбор цвета
         public int dx = 0;
         public int dy = 0;
         
@@ -28,13 +31,9 @@ namespace OOP6
             bitmap = new Bitmap(sheet.Width, sheet.Height);
             G = Graphics.FromImage(bitmap);
             sheet.Image = bitmap;
-            circuit = new RectangleF(sheet.Location.X + 13, sheet.Location.Y, sheet.Width - 27, sheet.Height - 27);
-            
+            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 26, sheet.Width - 2, sheet.Height - 2);
         }
-        
-        
 
-       
         private void unselectedAll()
         {
             for (int i = 0; i < S.getsize(); i++)
@@ -48,6 +47,21 @@ namespace OOP6
         {
             if (e.Button == MouseButtons.Left)
             {
+                switch (c)
+                {
+                    case 1:
+                        color = Color.Yellow;
+                        break;
+                    case 2:
+                        color = Color.Blue;
+                        break;
+                    case 3:
+                        color = Color.Green;
+                        break;
+                    default:
+                        color = Color.Black;
+                        break;
+                }
                 for (int i = 0; i < S.getsize(); i++)
                 {
                     if (S.obj[i] != null)
@@ -55,14 +69,19 @@ namespace OOP6
                        Object current = S.obj[i];
                        if (S.obj[i].Popal(e.X, e.Y))
                        {
-                           if (!ctrlPress)
-                           {
-                               unselectedAll();
+                            if (!ctrlPress)
+                            {
+                                unselectedAll();
+                            }
+                            if (Cpress)
+                            {
+                                current.ChangeColor(color);
                             }
                             current.popal = (current.popal ? false : true);
                             this.Invalidate();
                             return;
-                        }
+                       }
+                       
                     }
                 }
                 unselectedAll(); 
@@ -84,27 +103,34 @@ namespace OOP6
                         this.Invalidate();
                         break;
                 }
-                
-               
+                for (int i = S.getsize()-1; i >= 0; i--)
+                {
+                    if (S.obj[i] != null)
+                    {
+                        S.obj[i].ChangeColor(color);
+                        break;
+                    }
+                }
+
             }
         }
-
         private void sheet_Paint(object sender, PaintEventArgs e)
         {
-            G.Clear(Color.White);
+            G.Clear(Color.White);  
             for (int i = 0; i < S.getsize(); i++)
             {
                 if (S.obj[i] != null)
+                {
                     S.obj[i].DrawShape(G);
+                }
             }
             sheet.Image = bitmap;
         }
 
-        
-
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             ctrlPress = false;
+            Cpress = false;
         }
 
         private void DrCirc_Click(object sender, EventArgs e)
@@ -132,12 +158,14 @@ namespace OOP6
             t = 3;
         }
 
-       
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
                 ctrlPress = true;
+            if(e.KeyCode == Keys.C)
+            {
+                Cpress = true;
+            }
             if (e.KeyCode == Keys.Delete)
             {
                 for (int i = 0; i < S.getsize(); i++)
@@ -175,7 +203,6 @@ namespace OOP6
                 dx = 0;
             }
 
-
             if(e.KeyCode == Keys.A || e.KeyCode == Keys.W || e.KeyCode == Keys.S || e.KeyCode == Keys.D ){
                 switch (e.KeyCode)
                 {
@@ -195,7 +222,6 @@ namespace OOP6
                         dx = 5;
                         dy = 0;
                         break;
-
                 }
                 for (int i = 0; i < S.getsize(); i++)
                 {
@@ -212,15 +238,24 @@ namespace OOP6
                 dy = 0;
             }
 
-            
-          
+            if(e.KeyCode == Keys.R)
+            {
+                for (int i = 0; i < S.getsize(); i++)
+                {
+                    if (S.obj[i] != null)
+                    {
+                        S.deleteObject(i);
+                    }
+                }
+                this.Invalidate();
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
             bitmap = new Bitmap(sheet.Width, sheet.Height);
             G = Graphics.FromImage(bitmap);
-            circuit = new RectangleF(sheet.Location.X + 13, sheet.Location.Y, sheet.Width - 27, sheet.Height - 27);
+            circuit = new RectangleF(sheet.Location.X - 11, sheet.Location.Y - 26, sheet.Width - 2, sheet.Height - 2);
             for(int i= 0; i< S.getsize(); i++)
             {
                 if (S.obj[i] != null)
@@ -228,8 +263,42 @@ namespace OOP6
             }
         }
 
-       
-        
+        private void YellowBt_Click(object sender, EventArgs e)
+        {
+            YellowBt.Enabled = false;
+            BlueBt.Enabled = true;
+            GreenBt.Enabled = true;
+            
+            c = 1;
+        }
+
+        private void BlueBt_Click(object sender, EventArgs e)
+        {
+            BlueBt.Enabled = false;
+            YellowBt.Enabled = true;
+            GreenBt.Enabled = true;
+            
+            c = 2;
+        }
+
+        private void GreenBt_Click(object sender, EventArgs e)
+        {
+            GreenBt.Enabled = false;
+            BlueBt.Enabled = true;
+            YellowBt.Enabled = true;
+            
+            c = 3;
+        }
+
+        private void ResetBt_Click(object sender, EventArgs e)
+        {
+            DrCirc.Enabled = true;
+            DrRec.Enabled = true;
+            DrTr.Enabled = true;
+            YellowBt.Enabled = true;
+            BlueBt.Enabled = true;
+            GreenBt.Enabled = true;
+        }
     }
 }
 
